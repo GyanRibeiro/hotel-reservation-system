@@ -1,69 +1,122 @@
 # Sistema de Gerenciamento de Reservas - Eclipse Hotel
 
-Este projeto é um sistema de gerenciamento de reservas para o fictício "Eclipse Hotel". Ele foi desenvolvido utilizando **Java** com o framework **Spring Boot** e **PostgreSQL** como banco de dados. O sistema permite gerenciar clientes, quartos e reservas, além de fornecer endpoints para consultas específicas.
+Este projeto é um sistema de gerenciamento de reservas para o fictício **Eclipse Hotel**. Ele foi desenvolvido utilizando **Java 8**, **Spring Boot**, **JPA/Hibernate** e **PostgreSQL** (ou **H2** para desenvolvimento local). O sistema permite gerenciar clientes, quartos e reservas, além de fornecer endpoints para consultas específicas.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 📋 Requisitos
 
-- **Java 21**: Linguagem de programação principal.
-- **Spring Boot**: Framework para desenvolvimento de aplicações Java.
-- **Spring Data JPA**: Para mapeamento objeto-relacional (ORM) e acesso ao banco de dados.
-- **PostgreSQL**: Banco de dados relacional utilizado.
-- **Maven**: Gerenciador de dependências.
-
----
-
-## 📋 Funcionalidades
-
-O sistema oferece as seguintes funcionalidades:
-
-### 1. **Gerenciamento de Clientes**
-- Cadastro, consulta, atualização e exclusão de clientes.
-
-### 2. **Gerenciamento de Quartos**
-- Cadastro, consulta, atualização e exclusão de quartos.
-
-### 3. **Gerenciamento de Reservas**
-- Abertura de novas reservas.
-- Encerramento de reservas.
-- Consulta de reservas por intervalo de datas.
-- Consulta de quartos ocupados no momento.
+- Java 8 ou superior
+- Maven
+- PostgreSQL (ou H2 para desenvolvimento local)
+- Spring Boot
+- JPA/Hibernate
 
 ---
 
-## 🔧 Como Configurar e Executar o Projeto
+## 🚀 Como Executar o Projeto
 
-### Pré-requisitos
-- **Java 21** instalado.
-- **Maven** instalado.
-- **PostgreSQL** instalado e configurado (ou use o H2 em memória).
-- **Git** para clonar o repositório.
+### 1️⃣ Clone o Repositório
 
-## ➡️ Melhorias Futuras
-Devido ao tempo de desenvolvimento, não consegui implementar algumas melhorias que poderiam ser feitas nesse projeto. Por isso, segue algumas melhorias que podem ser implementadas (vou implementar posteriormente);
+```bash
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
+```
 
-**- 1. Validação de Disponibilidade de Quartos
-   Problema: O sistema não verifica se o quarto já está reservado para o período solicitado.**
+### 2️⃣ Configure o Banco de Dados
 
-Solução: Implementar uma validação no endpoint de criação de reserva para garantir que o quarto esteja disponível no período de check-in e check-out solicitado.
+#### PostgreSQL (Produção)
+1. Crie um banco de dados chamado `hotel` no PostgreSQL.
+2. Configure o arquivo `application.properties` com as credenciais do seu banco de dados:
 
-**2. Melhorar o Tratamento de Exceções
-   Problema: O tratamento de exceções atual é básico e não fornece informações detalhadas sobre o erro.**
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/hotel
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=update
+```
 
-Solução: Criar uma classe de exceção personalizada e um @ControllerAdvice para tratar erros de forma mais amigável.
+#### H2 (Banco em Memória - Desenvolvimento)
+Para desenvolvimento local, configure o `application.properties`:
 
-**3. Adicionar Autenticação e Autorização
-   Problema: O sistema não possui controle de acesso, o que pode permitir que qualquer pessoa acesse ou modifique dados.**
+```properties
+spring.datasource.url=jdbc:h2:mem:hotel
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+```
 
-Solução: Implementar autenticação e autorização usando Spring Security.
+### 3️⃣ Execute o Projeto
 
-**4. Adicionar Logs Detalhados
-   Problema: O sistema não possui logs detalhados, o que dificulta a depuração em caso de erros.**
+```bash
+mvn spring-boot:run
+```
+O projeto estará disponível em: [http://localhost:8080](http://localhost:8080).
 
-Solução: Adicionar logs em pontos estratégicos do sistema, como em operações de CRUD e validações.
+---
 
-**5. Adicionar Documentação da API
-   Problema: A API não está documentada, o que dificulta o uso por outros desenvolvedores ou equipes.**
+## 🛠️ Endpoints Disponíveis
 
-Solução: Usar o Swagger para gerar documentação automática da API.
+### **Clientes (`/customers`)**
+- `GET /customers` → Lista todos os clientes.
+- `GET /customers/{id}` → Retorna um cliente específico pelo ID.
+- `POST /customers` → Cria um novo cliente.
+- `PUT /customers/{id}` → Atualiza um cliente existente.
+- `DELETE /customers/{id}` → Remove um cliente.
+
+### **Quartos (`/rooms`)**
+- `GET /rooms` → Lista todos os quartos.
+- `GET /rooms/{id}` → Retorna um quarto específico pelo ID.
+- `POST /rooms` → Cria um novo quarto.
+- `PUT /rooms/{id}` → Atualiza um quarto existente.
+- `DELETE /rooms/{id}` → Remove um quarto.
+
+### **Reservas (`/reservations`)**
+- `POST /reservations` → Cria uma nova reserva.
+  - Parâmetros:
+    - `customerId`: ID do cliente.
+    - `roomId`: ID do quarto.
+    - `checkInDate`: Data de check-in (formato `yyyy-MM-dd`).
+    - `checkOutDate`: Data de check-out (formato `yyyy-MM-dd`).
+- `PUT /reservations/{id}/finish` → Finaliza uma reserva.
+- `GET /reservations/by-date-range` → Retorna todas as reservas dentro de um intervalo de datas.
+  - Parâmetros:
+    - `startDate`: Data inicial (`yyyy-MM-dd`).
+    - `endDate`: Data final (`yyyy-MM-dd`).
+- `GET /reservations/occupied-rooms` → Retorna todos os quartos ocupados no momento.
+
+---
+
+## 📊 Exemplos de Requisições
+
+### Criar um Cliente (`POST /customers`)
+```json
+{
+    "name": "João Silva",
+    "email": "joao@example.com",
+    "phone": "11999999999"
+}
+```
+
+### Criar um Quarto (`POST /rooms`)
+```json
+{
+    "number": "101",
+    "type": "Standard",
+    "price": 200.0
+}
+```
+
+### Criar uma Reserva (`POST /reservations`)
+```json
+{
+    "customerId": 1,
+    "roomId": 1,
+    "checkInDate": "2023-10-15",
+    "checkOutDate": "2023-10-20"
+}
+```
+
+---
