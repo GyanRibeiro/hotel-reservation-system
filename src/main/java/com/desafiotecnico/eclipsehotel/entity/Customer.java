@@ -9,7 +9,7 @@ import lombok.Setter;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String email;
@@ -17,11 +17,5 @@ public class Customer {
 
     public Customer() {
 
-    }
-
-    public Customer( String name, String email, String phone) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
     }
 }

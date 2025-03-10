@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EclipseHotelApplication {
 
-	@GetMapping("/helloword")
-	public String helloWord() {
-		return "Hello World!!!!";
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(EclipseHotelApplication.class, args);
 	}
