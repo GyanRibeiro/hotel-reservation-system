@@ -1,6 +1,6 @@
-# Sistema de Gerenciamento de Reservas - Eclipse Hotel
+# Eclipse Hotel - API de Reservas
 
-Este projeto é um sistema de gerenciamento de reservas para o fictício **Eclipse Hotel**. Ele foi desenvolvido utilizando **Java 8**, **Spring Boot**, **JPA/Hibernate** e **PostgreSQL** (ou **H2** para desenvolvimento local). O sistema permite gerenciar clientes, quartos e reservas, além de fornecer endpoints para consultas específicas.
+O Eclipse Hotel é uma **API REST** para gerenciamento de reservas em hotéis, permitindo operações de CRUD para clientes, quartos e reservas. Desenvolvido com Spring Boot, JPA/Hibernate e PostgreSQL, ele facilita a administração e consulta de informações sobre hospedagens
 
 ---
 
