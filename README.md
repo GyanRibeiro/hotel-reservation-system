@@ -19,8 +19,8 @@ O Eclipse Hotel é uma **API REST** para gerenciamento de reservas em hotéis, p
 ### 1️⃣ Clone o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+git clone git@github.com:GyanRibeiro/hotel-reservation-system.git
+cd hotel-reservation-system
 ```
 
 ### 2️⃣ Configure o Banco de Dados
